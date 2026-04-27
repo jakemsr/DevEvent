@@ -22,7 +22,7 @@ const Page = async () => {
 
       <ExploreBtn />
 
-      <div className="mt-20 space-y-7">
+      <div id="events" className="mt-20 space-y-7">
         <h3>Featured Events</h3>
 
         <ul className="events">
