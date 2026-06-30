@@ -27,7 +27,7 @@ const NavBar = () => {
           <Link href="/#events">Events</Link>
           {session ? (
             <>
-            Hello, {session.user.firstName}!
+            {session.user.firstName && <span className="hidden xl:inline">Hello, {session.user.firstName}!</span>}
             {(session.user.role === "creator" || session.user.role === "admin") &&
               <Link href="/create-event">Create Event</Link>}
             <SignOut />
