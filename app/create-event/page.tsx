@@ -143,25 +143,25 @@ export default function Page() {
           </div>
 
           <div>
-            <label htmlFor="tag">Tags</label>
+            <label htmlFor="tag0">Tags</label>
           </div>
           <div className="grid grid-cols-4 gap-2 w-100">
-            <input type="text" id="tag" name="tag" size={15} />
-            <input type="text" id="tag" name="tag" size={15} />
-            <input type="text" id="tag" name="tag" size={15} />
-            <input type="text" id="tag" name="tag" size={15} />
-            <input type="text" id="tag" name="tag" size={15} />
-            <input type="text" id="tag" name="tag" size={15} />
-            <input type="text" id="tag" name="tag" size={15} />
-            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag0" name="tag" size={15} />
+            <input type="text" id="tag1" name="tag" size={15} />
+            <input type="text" id="tag2" name="tag" size={15} />
+            <input type="text" id="tag3" name="tag" size={15} />
+            <input type="text" id="tag4" name="tag" size={15} />
+            <input type="text" id="tag5" name="tag" size={15} />
+            <input type="text" id="tag6" name="tag" size={15} />
+            <input type="text" id="tag7" name="tag" size={15} />
           </div>
 
           <div>
-            <label htmlFor="agenda">Agenda</label>
+            <label htmlFor="agenda0">Agenda</label>
           </div>
           <div className="flex flex-col gap-2 w-100">
             {Array.from({ length: numAgenda }).map((_, index) => (
-              <input key={index} type="text" id="agenda" name="agenda" size={35} />
+              <input key={index} type="text" id={`agenda${index}`} name="agenda" size={35} />
             ))}
             <button type="button" onClick={handleAddAgenda} >Add row</button>
           </div>
