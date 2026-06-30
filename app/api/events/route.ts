@@ -1,14 +1,32 @@
+import { NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { File } from "buffer";
 import { v2 as cloudinary } from 'cloudinary';
 import { Event } from "@/database";
 import connectToDatabase from "@/lib/mongodb";
-import { File } from "buffer";
-import { get } from "http";
-import { NextRequest, NextResponse } from "next/server";
-import { resolve } from "path";
-import { buffer } from 'stream/consumers';
+import { auth } from "@/lib/auth";
+
 
 export async function POST(req: NextRequest) {
     try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        });
+
+        if (!session || !session.user) {
+            return new Response(
+                JSON.stringify({ error: 'Unauthorized' }), 
+                    { status: 401, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
+        if (session.user.role !== 'admin' && session.user.role !== 'creator') {
+            return new Response(
+                JSON.stringify({ error: 'Forbidden: Admins only' }), 
+                    { status: 403, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
         await connectToDatabase();
         const formData = await req.formData();
 
@@ -23,9 +41,6 @@ export async function POST(req: NextRequest) {
         const file = (formData.get('image') as unknown) as File;
         if (!file) return NextResponse.json({ message: "Image file is required" }, { status: 400 });       
 
-        let tags = JSON.parse(formData.get('tags') as string);
-        let agenda = JSON.parse(formData.get('agenda') as string);
-
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
@@ -38,6 +53,9 @@ export async function POST(req: NextRequest) {
         });
 
         event.image = (uploadResult as { secure_url: string }).secure_url;
+
+        let tags = JSON.parse(formData.get('tags') as string);
+        let agenda = JSON.parse(formData.get('agenda') as string);
 
         const createdEvent = await Event.create({
             ...event,

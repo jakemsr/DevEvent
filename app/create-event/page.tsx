@@ -1,0 +1,180 @@
+"use client";
+
+import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
+
+
+export default function Page() {
+
+  const [status, setStatus] = useState("");
+  const [numAgenda, setNumAgenda] = useState(4);
+
+  const { data: session } = authClient.useSession();
+  if (!session || (session?.user.role !== "creator" && session?.user.role !== "admin")) {
+    return (
+    <section id="create-event">
+      <h1 className="mb-8">Not Authorized</h1>
+      Please contact admin if you would like to be able to add events.
+    </section>
+    )
+  }
+
+  const handleAddAgenda = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setNumAgenda(prev => prev + 1);
+  }
+
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus("Sending ...");
+
+    const formData = new FormData(event.currentTarget);
+    
+    const tags = formData.getAll("tag").filter(value => value !== "");
+    formData.set("tags", JSON.stringify(tags));
+
+    const agenda = formData.getAll("agenda").filter(value => value !== "");
+    formData.set("agenda", JSON.stringify(agenda));
+
+    try {
+      const response = await fetch('/api/events', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setStatus("Success!");
+      } else {
+        setStatus(`Error: ${data.message}: ${data.error}`);
+      }
+    } catch (error) {
+      setStatus(`Submission failed ${error}`);
+    }
+  }
+
+  return (
+    <section id="create-event">
+      <h1 className="mb-8">Create Event</h1>
+
+      <form onSubmit={handleSubmit}>
+
+        <div className="w-80 grid grid-cols-2 gap-4">
+
+          <div>
+            <label htmlFor="title">Title</label>
+          </div>
+          <div>
+            <input type="text" id="title" name="title" size={25} />
+          </div>
+
+          <div>
+            <label htmlFor="description">Description</label>
+          </div>
+          <div>
+            <textarea id="description" name="description" rows={4} cols={35} maxLength={1000} />
+          </div>
+
+          <div>
+            <label htmlFor="overview">Overview</label>
+          </div>
+          <div>
+            <textarea id="overview" name="overview" rows={2} cols={35} maxLength={500} />
+          </div>
+
+          <div>
+            <label htmlFor="location">Location</label>
+          </div>
+          <div>
+            <input type="text" id="location" name="location" size={25} />
+          </div>
+
+          <div>
+            <label htmlFor="venue">Venue</label>
+          </div>
+          <div>
+            <input type="text" id="venue" name="venue" size={25} />
+          </div>
+
+          <div>
+            <label htmlFor="date">Date</label>
+          </div>
+          <div>
+            <input type="date" id="date" name="date" />
+          </div>
+
+          <div>
+            <label htmlFor="time">Time</label>
+          </div>
+          <div>
+            <input type="time" id="time" name="time" />
+          </div>
+
+          <div>
+            <label htmlFor="mode">Mode</label>
+          </div>
+          <div>
+            <select id="mode" name="mode" defaultValue="hybrid" >
+              <option value="hybrid">Hybrid</option>
+              <option value="online">Online</option>
+              <option value="offline">Offline</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="audience">Audience</label>
+          </div>
+          <div>
+            <input type="text" id="audience" name="audience" size={25} />
+          </div>
+
+          <div>
+            <label htmlFor="organizer">Organizer</label>
+          </div>
+          <div>
+            <input type="text" id="organizer" name="organizer" size={25} />
+          </div>
+
+          <div>
+            <label htmlFor="image">Image</label>
+          </div>
+          <div>
+            <input type="file" id="image" name="image" accept="image/*" />
+          </div>
+
+          <div>
+            <label htmlFor="tag">Tags</label>
+          </div>
+          <div className="grid grid-cols-4 gap-2 w-100">
+            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag" name="tag" size={15} />
+            <input type="text" id="tag" name="tag" size={15} />
+          </div>
+
+          <div>
+            <label htmlFor="agenda">Agenda</label>
+          </div>
+          <div className="flex flex-col gap-2 w-100">
+            {Array.from({ length: numAgenda }).map((_, index) => (
+              <input key={index} type="text" id="agenda" name="agenda" size={35} />
+            ))}
+            <button type="button" onClick={handleAddAgenda} >Add row</button>
+          </div>
+
+        </div>
+
+        <div className="my-4 w-80">
+          <button type="submit">Submit</button>
+        </div>
+
+        <p>{status}</p>
+
+      </form>
+    </section>
+  );
+}
