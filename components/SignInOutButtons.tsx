@@ -40,15 +40,6 @@ export function SignOut() {
 
   const handleClick = async () => {
         await authClient.signOut();
-        /*
-        {
-          fetchOptions: {
-            onSuccess: () => {
-              router.push("/");
-            },
-          }
-        }
-        */
   }
 
   return (
