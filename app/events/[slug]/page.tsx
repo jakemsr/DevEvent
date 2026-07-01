@@ -1,9 +1,12 @@
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import BookEvent from "@/components/BookEvent";
 import EventCard from "@/components/EventCard";
 import { IEvent } from "@/database/event.model";
 import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
-import Image from "next/image";
-import { notFound } from "next/navigation";
+import { checkBookingByEmail, getBookingsCount } from "@/lib/actions/booking.actions";
+import { auth } from "@/lib/auth";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -66,7 +69,19 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
 
   if (!description) return notFound();
 
-  const bookings = 10;
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  let isBooked = false;
+  if (session?.user?.email) {
+    const { success, exists } = await checkBookingByEmail({ eventId: event._id, email: session.user.email });
+    if (success && exists) {
+      isBooked = true;
+    }
+  }
+
+  const { success, count } = await getBookingsCount({ eventId: event._id });
+  const bookings = success ? count : 0;
 
   const similarEvents: IEvent[] = await getSimilarEventsBySlug(slug);
 
@@ -106,21 +121,36 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
         <EventTags tags={tags} />
       </div>
 
-      {/** right side - booking form */}
+        {/** right side - booking form */}
         <aside className="booking">
           <div className="signup-card">
             <h2>Book Your Spot</h2>
-            {bookings > 0 ? (
-              <p className="text-sm">
-                Join {bookings} people who have already booked their spot!
-              </p>
-            ): (
-              <p className="text-sm">
-                Be the first to book your spot!
-              </p>
-            )}
+            {isBooked ? (
+              <>
+                <p className="text-sm">
+                  You have already booked your spot!
+                </p>
+                {bookings > 0 ? (
+                  <p className="text-sm">
+                    You'll be joining {bookings - 1} other people who have already booked!
+                  </p>
+                ) : null}
+              </>
+            ) : (
+              <>
+                {bookings > 0 ? (
+                  <p className="text-sm">
+                    Join {bookings} people who have already booked their spot!
+                  </p>
+                ) : (
+                  <p className="text-sm">
+                    Be the first to book your spot!
+                  </p>
+                )}
 
-            <BookEvent eventId={event._id} slug={event.slug}/>
+                <BookEvent eventId={event._id} slug={event.slug} />
+              </>
+            )}
 
           </div>
         </aside>

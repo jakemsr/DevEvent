@@ -2,11 +2,22 @@
 
 import { createBooking } from "@/lib/actions/booking.actions";
 import posthog from "posthog-js";
-import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import { useEffect, useState } from "react";
 
 const BookEvent = ({ eventId, slug}: {eventId: string, slug: string}) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const { data, error } = await authClient.getSession();
+      if (data?.user?.email) {
+          setEmail(data.user.email);
+      }
+    }
+    fetchSession();
+  }, []);
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
