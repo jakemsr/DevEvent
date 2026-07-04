@@ -47,12 +47,20 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           }));
           break;
         case SignInMode.email:
+          if (!email || !password) {
+            error = new Error("Email and password are required");
+            break;
+          }
           ({data, error} = await authClient.signIn.email({
             email: email || "",
             password: password || "",
           }));
           break;
         case SignInMode.signUp:
+          if (!firstName || !lastName || !email || !password) {
+            error = new Error("All fields are required for sign up");
+            break;
+          }
           ({ data, error } = await authClient.signUp.email({
             name: `${firstName || ""} ${lastName || ""}`,
             firstName: firstName || "",
