@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { Button } from "./SignInOutButtons"
+import { Button, LoadingSpinner } from "./SignInOutButtons"
 
 
 enum SignInMode {
+  none = "",
   GitHub = "GitHub",
   email = "email",
   signUp = "signUp"
@@ -22,6 +23,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signUp, setSignUp] = useState(false);
+  const [authenticating, setAuthenticating] = useState<SignInMode>(SignInMode.none);
   const [error, setError] = useState<string | null>(null);
 
   interface SignInProps {
@@ -36,6 +38,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
 
     const handleClick = async () => {
       setError(null);
+      setAuthenticating(mode);
       let data, error;
       switch (mode) {
         case SignInMode.GitHub:
@@ -66,10 +69,12 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
       } else {
         onModalClose();
       }
+      setAuthenticating(SignInMode.none);
     }
 
     return (
-      <Button onClick={handleClick}>
+      <Button onClick={handleClick} disabled={authenticating !== SignInMode.none}>
+        {authenticating === mode && <LoadingSpinner />}
         {mode === SignInMode.signUp ? "Sign Up" : `Sign In with ${mode}`}
       </Button>
     )
