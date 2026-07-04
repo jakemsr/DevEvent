@@ -1,11 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image"
 import Link from "next/link"
 import { authClient } from "@/lib/auth-client";
-import { SignIn, SignOut } from "@/components/SignInOutButtons"
+import LoginModal from "./LoginModal";
+import { SignOut } from "./SignInOutButtons";
 
 const NavBar = () => {
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const onModalClose = () => {
+    setIsLoginModalOpen(false);
+  }
+
   const {
     data: session,
     isPending,
@@ -33,7 +42,10 @@ const NavBar = () => {
             <SignOut />
             </>
           ) : (
-            <SignIn />
+            <>
+              <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
+              {isLoginModalOpen && <LoginModal onModalClose={onModalClose} />}
+            </>
           )}
         </ul>
       </nav>

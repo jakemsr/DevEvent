@@ -1,15 +1,15 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { ReactEventHandler } from "react";
+import { authClient } from "@/lib/auth-client";
+
 
 interface ButtonProps {
   onClick: ReactEventHandler;
   children: React.ReactNode;
 }
 
-const Button = ({ onClick, children }: ButtonProps) => {
+export const Button = ({ onClick, children }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
@@ -19,32 +19,15 @@ const Button = ({ onClick, children }: ButtonProps) => {
   )
 }
 
-export function SignIn() {
+export const SignOut = () => {
 
   const handleClick = async () => {
-        await authClient.signIn.social({
-           provider: "github",
-        });
+    await authClient.signOut();
   }
 
   return (
-      <Button onClick={handleClick}>
-        Sign In
-      </Button>
-  )
-}
-
-export function SignOut() {
-
-  const router = useRouter();
-
-  const handleClick = async () => {
-        await authClient.signOut();
-  }
-
-  return (
-      <Button onClick={handleClick}>
-        Sign Out
-      </Button>
+    <Button onClick={handleClick}>
+      Sign Out
+    </Button>
   )
 }
