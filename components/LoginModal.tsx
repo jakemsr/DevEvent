@@ -27,6 +27,19 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
+  const sendResetEmail = async () => {
+    if (!email) {
+      setError("Email is required");
+      return;
+    }
+    const resetURL = window.location.origin + "/reset-password";
+    await authClient.requestPasswordReset({
+      email,
+      redirectTo: resetURL,
+    });
+    setMessage("Password reset email sent! Please check your inbox.");
+  }
+
   interface SignInProps {
     mode: SignInMode;
     email?: string;
@@ -113,9 +126,21 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           </button>
         </div>
 
-        {error && <div className="text-red-400">{error}</div>}
-        {message && <div className="w-full px-4">{message}</div>}
+        {error && <div className="w-full px-4 text-center text-red-400">{error}</div>}
+        {message && <div className="mx-4 p-2 border text-center bg-accent-foreground">{message}</div>}
 
+        {!signUp && (
+          <>
+            <div className="mt-4">
+              <SignIn mode={SignInMode.GitHub} />
+            </div>
+            <div className="flex items-center mt-4 px-4 w-full">
+              <div className="grow border-t border-gray-300"></div>
+              <span className="shrink mx-2">OR</span>
+              <div className="grow border-t border-gray-300"></div>
+            </div>
+          </>
+        )}
         <div className="my-4 grid grid-cols-4 px-4 w-full gap-2 items-center">
           {signUp && (
             <>
@@ -177,21 +202,14 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           firstName={firstName}
           lastName={lastName}
         />
-        {!signUp && (
-          <>
-            <div className="flex items-center mt-4 px-4 w-full">
-              <div className="grow border-t border-gray-300"></div>
-              <span className="shrink mx-2">OR</span>
-              <div className="grow border-t border-gray-300"></div>
-            </div>
-            <div className="mt-4">
-              <SignIn mode={SignInMode.GitHub} />
-            </div>
-          </>
-        )}
-        <div className="my-4">
+        <div className="mt-4">
           <span onClick={() => setSignUp(!signUp)} className="cursor-pointer">
             {signUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+          </span>
+        </div>
+        <div className="my-4">
+          <span onClick={() => {setError(""); sendResetEmail();}} className="cursor-pointer">
+            Forget Password? Request reset email
           </span>
         </div>
       </div>
