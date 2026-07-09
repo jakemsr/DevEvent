@@ -1,8 +1,14 @@
 
 import mongoose from "mongoose";
 import { betterAuth } from "better-auth";
+import { Resend } from "resend";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import connectToDatabase from "@/lib/mongodb"
+import { VerificationEmail } from '@/emails/verification';
+import { PasswordResetEmail } from '@/emails/password-reset';
+
+
+const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 connectToDatabase();
 
@@ -13,7 +19,28 @@ const db = client.db();
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
   emailAndPassword: {
-    enabled: true
+    enabled: true,
+    requireEmailVerification: true,
+    sendResetPassword: async ({ user, url, token }, request) => {
+      void resend.emails.send({
+        from: 'devevents@notifications.jakemsr.dev',
+        to: [user.email],
+        subject: 'Reset your password',
+        react: PasswordResetEmail({ resetUrl: url }),
+      });
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      void resend.emails.send({
+        from: 'devevents@notifications.jakemsr.dev',
+        to: [user.email],
+        subject: 'Verify your email address',
+        react: VerificationEmail({ verificationUrl: url }),
+      });
+    },
   },
   session: {
     cookieCache: {

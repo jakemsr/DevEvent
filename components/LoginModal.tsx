@@ -25,6 +25,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
   const [signUp, setSignUp] = useState(false);
   const [authenticating, setAuthenticating] = useState<SignInMode>(SignInMode.none);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState("");
 
   interface SignInProps {
     mode: SignInMode;
@@ -75,7 +76,11 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
       if (error) {
         setError(error.message || null);
       } else {
-        onModalClose();
+        if (mode === SignInMode.signUp) {
+          setMessage("Sign up successful! Please check your email to verify your account.");
+        } else {
+          onModalClose();
+        }
       }
       setAuthenticating(SignInMode.none);
     }
@@ -109,6 +114,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
         </div>
 
         {error && <div className="text-red-400">{error}</div>}
+        {message && <div className="w-full px-4">{message}</div>}
 
         <div className="my-4 grid grid-cols-4 px-4 w-full gap-2 items-center">
           {signUp && (
