@@ -130,6 +130,10 @@
   ul {
     @apply list-disc list-inside;
   }
+
+  button {
+    @apply bg-primary hover:bg-primary/90 cursor-pointer items-center justify-center rounded-[6px] px-2 py-1 font-semibold text-black;
+  }
 }
 
 @layer components {
@@ -140,11 +144,7 @@
   }
 
   #explore-btn {
-    @apply border-dark-200 bg-dark-100 flex w-fit cursor-pointer  rounded-full border px-8 py-3.5 max-sm:w-full text-center;
-
-    a {
-      @apply flex-center gap-2 text-center w-full;
-    }
+    @apply border-dark-200 bg-dark-100 flex w-fit rounded-full border px-8 py-3.5 max-sm:w-full items-center gap-2;
   }
 
   header {
@@ -164,10 +164,6 @@
 
     ul {
       @apply flex flex-row items-center gap-4;
-    }
-
-    button {
-      @apply bg-primary hover:bg-primary/90 w-fit cursor-pointer items-center justify-center rounded-[6px] px-2 py-1 font-semibold text-black;
     }
   }
 
@@ -270,7 +266,7 @@
       }
 
       button {
-        @apply bg-primary hover:bg-primary/90 w-full cursor-pointer items-center justify-center rounded-[6px] px-4 py-2.5 text-lg font-semibold text-black;
+        @apply w-full;
       }
     }
   }
@@ -283,7 +279,7 @@
     }
 
     button {
-      @apply bg-primary hover:bg-primary/90 w-full cursor-pointer items-center justify-center rounded-[6px] px-4 py-2.5 text-lg font-semibold text-black;
+      @apply w-full;
     }
   }
 }
