@@ -111,6 +111,21 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
       className="fixed top-0 left-0 w-screen h-screen bg-black/75 flex justify-center items-center z-1000"
       onClick={onModalClose}
     >
+      {message ? (
+      <div className="border-2 rounded-lg w-96 flex flex-col items-center justify-center bg-black"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-3 w-full flex justify-end">
+          <button onClick={onModalClose} className="cursor-pointer">
+            X
+          </button>
+        </div>
+        <div className="w-full p-4 text-center">
+          {message}
+        </div>
+      </div>
+
+      ):(
       <div className="border-2 rounded-lg w-96 flex flex-col items-center justify-center bg-black"
         onClick={(e) => e.stopPropagation()}
       >
@@ -127,7 +142,6 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
         </div>
 
         {error && <div className="w-full px-4 text-center text-red-400">{error}</div>}
-        {message && <div className="mx-4 p-2 border text-center bg-accent-foreground">{message}</div>}
 
         {!signUp && (
           <>
@@ -203,16 +217,17 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           lastName={lastName}
         />
         <div className="mt-4">
-          <span onClick={() => setSignUp(!signUp)} className="cursor-pointer">
+          <span onClick={() => {setError(""); setSignUp(!signUp)}} className="cursor-pointer">
             {signUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
           </span>
         </div>
         <div className="my-4">
           <span onClick={() => {setError(""); sendResetEmail();}} className="cursor-pointer">
-            Forget Password? Request reset email
+            Forgot Password? Request reset email
           </span>
         </div>
       </div>
+      )}
     </div>
   );
 }
