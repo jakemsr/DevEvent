@@ -44,12 +44,12 @@ export default function Page() {
 
       const data = await response.json();
       if (response.ok) {
-        setStatus("Success!");
+        setStatus("Event added!");
       } else {
         setStatus(`Error: ${data.message}: ${data.error}`);
       }
     } catch (error) {
-      setStatus(`Submission failed ${error}`);
+      setStatus(`Submission failed: ${error}`);
     }
   }
 
@@ -174,13 +174,13 @@ export default function Page() {
             {Array.from({ length: numAgenda }).map((_, index) => (
               <input key={index} type="text" id={`agenda${index}`} name="agenda" size={35} />
             ))}
-            <button type="button" onClick={handleAddAgenda} >Add row</button>
+            <button type="button" onClick={handleAddAgenda} >Add agenda row</button>
           </div>
 
         </div>
 
         <div className="my-4 w-80">
-          <button type="submit">Submit</button>
+          <button type="submit">Add Event</button>
         </div>
 
         <p>{status}</p>
