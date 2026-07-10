@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { Button, LoadingSpinner } from "./SignInOutButtons"
+import { Button, LoadingSpinner } from "./Button"
 
 
 enum SignInMode {
