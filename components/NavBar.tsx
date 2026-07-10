@@ -6,6 +6,7 @@ import Link from "next/link"
 import { authClient } from "@/lib/auth-client";
 import LoginModal from "./LoginModal";
 import { SignOut } from "./SignInOutButtons";
+import { Button, LoadingSpinner } from "./Button";
 
 const NavBar = () => {
 
@@ -43,7 +44,10 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
+              <Button onClick={() => setIsLoginModalOpen(true)} disabled={isPending}>
+                {isPending && <LoadingSpinner />}
+                Login
+              </Button>
               {isLoginModalOpen && <LoginModal onModalClose={onModalClose} />}
             </>
           )}
