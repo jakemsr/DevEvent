@@ -9,15 +9,7 @@ export default function Page() {
   const [status, setStatus] = useState("");
   const [numAgenda, setNumAgenda] = useState(4);
 
-  const { data: session } = authClient.useSession();
-  if (!session || (session?.user.role !== "creator" && session?.user.role !== "admin")) {
-    return (
-    <section id="create-event">
-      <h1 className="mb-8">Not Authorized</h1>
-      Please contact admin if you would like to be able to add events.
-    </section>
-    )
-  }
+  const { data: session, isPending } = authClient.useSession();
 
   const handleAddAgenda = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -186,6 +178,8 @@ export default function Page() {
         <p>{status}</p>
 
       </form>
+        )
+      )}
     </section>
   );
 }
