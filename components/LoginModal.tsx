@@ -122,9 +122,9 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-3 w-full flex justify-end">
-          <button onClick={onModalClose} className="cursor-pointer">
+          <Button onClick={onModalClose}>
             X
-          </button>
+          </Button>
         </div>
         <div className="w-full p-4 text-center">
           {message}
@@ -142,9 +142,9 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
               {signUp ? "Sign Up" : "Login"}
             </h2>
           </div>
-          <button onClick={onModalClose} className="cursor-pointer">
+          <Button onClick={onModalClose}>
             X
-          </button>
+          </Button>
         </div>
 
         {error && <div className="w-full px-4 text-center text-red-400">{error}</div>}
