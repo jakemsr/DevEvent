@@ -28,18 +28,6 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
-  const sendResetEmail = async () => {
-    if (!email) {
-      setError("Email is required");
-      return;
-    }
-    const resetURL = window.location.origin + "/reset-password";
-    await authClient.requestPasswordReset({
-      email,
-      redirectTo: resetURL,
-    });
-    setMessage("Password reset email sent! Please check your inbox.");
-  }
 
   interface SignInProps {
     mode: SignInMode;
@@ -84,6 +72,17 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
             password: password || "",
           }));
           break;
+        case SignInMode.passwordReset:
+          if (!email) {
+            error = new Error("Email is required for password reset");
+            break;
+          }
+          const resetURL = window.location.origin + "/reset-password";
+          ({ data, error } = await authClient.requestPasswordReset({
+            email,
+            redirectTo: resetURL,
+          }));
+          break;
         default:
           throw new Error(`Unsupported sign in mode: ${mode}`);
       }
@@ -91,6 +90,9 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
         setError(error.message || null);
       } else {
         switch (mode) {
+          case SignInMode.passwordReset:
+            setMessage("Password reset email sent! Please check your inbox.");
+            break;
           case SignInMode.signUp:
             setMessage("Sign up successful! Please check your email to verify your account.");
             break;
@@ -226,9 +228,8 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           </span>
         </div>
         <div className="my-4">
-          <span onClick={() => {setError(""); sendResetEmail();}} className="cursor-pointer">
-            Forgot Password? Request reset email
-          </span>
+          Forgot Password?
+          <SignIn mode={SignInMode.passwordReset} email={email} />
         </div>
       </div>
       )}
