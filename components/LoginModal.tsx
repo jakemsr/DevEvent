@@ -134,7 +134,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
             X
           </Button>
         </div>
-        <div className="w-full p-4 text-center">
+        <div className="w-full px-4 pb-2 text-center">
           {message}
         </div>
       </div>
