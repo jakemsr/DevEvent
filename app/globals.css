@@ -166,7 +166,7 @@
       }
     }
 
-    ul {
+    div {
       @apply flex flex-row items-center gap-4;
     }
   }

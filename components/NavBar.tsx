@@ -7,6 +7,7 @@ import { authClient } from "@/lib/auth-client";
 import LoginModal from "./LoginModal";
 import { SignOut } from "./SignInOutButtons";
 import { Button, LoadingSpinner } from "./Button";
+import NavMenu from "./NavMenu";
 
 const NavBar = () => {
 
@@ -32,16 +33,10 @@ const NavBar = () => {
           <p>DevEvents</p>
         </Link>
 
-        <ul>
-          <Link href="/">Home</Link>
-          <Link href="/#events">Events</Link>
+        <div className="z-50">
+          <NavMenu />
           {session ? (
-            <>
-            {session.user.firstName && <span className="hidden xl:inline">Hello, {session.user.firstName}!</span>}
-            {(session.user.role === "creator" || session.user.role === "admin") &&
-              <Link href="/create-event">Create Event</Link>}
             <SignOut />
-            </>
           ) : (
             <>
               <Button onClick={() => setIsLoginModalOpen(true)} disabled={isPending}>
@@ -51,7 +46,7 @@ const NavBar = () => {
               {isLoginModalOpen && <LoginModal onModalClose={onModalClose} />}
             </>
           )}
-        </ul>
+        </div>
       </nav>
     </header>
   )
