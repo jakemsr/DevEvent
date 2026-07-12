@@ -104,13 +104,21 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
       setAuthenticating(SignInMode.none);
     }
 
+    let buttonText = `Sign In with ${mode}`;
+    if (mode === SignInMode.signUp) {
+      buttonText = "Sign Up";
+    } else if (mode === SignInMode.passwordReset) {
+      buttonText = "Request Reset";
+    }
+
     return (
       <Button onClick={handleClick} disabled={authenticating !== SignInMode.none}>
         {authenticating === mode && <LoadingSpinner />}
-        {mode === SignInMode.signUp ? "Sign Up" : `Sign In with ${mode}`}
+        {buttonText}
       </Button>
     )
   }
+
 
   return (
     <div
