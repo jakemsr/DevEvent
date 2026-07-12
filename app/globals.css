@@ -144,7 +144,7 @@
   }
 
   #explore-btn {
-    @apply border-dark-200 bg-dark-100 flex w-fit rounded-full border px-8 py-3.5 max-sm:w-full items-center gap-2;
+    @apply border-dark-200 bg-dark-100 flex w-fit rounded-full border px-8 py-3.5 max-sm:w-full items-center justify-center gap-2;
   }
 
   header {
