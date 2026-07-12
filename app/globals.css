@@ -99,7 +99,7 @@
 }
 
 @utility glass {
-  @apply bg-[#12121280]/50 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl border-b border-border-dark;
+  @apply bg-[#12121280]/50 rounded-md bg-clip-padding before:absolute before:inset-0 before:backdrop-blur-xl before:z-10 border-b border-border-dark;
 }
 
 @utility card-shadow {
@@ -159,7 +159,7 @@
     }
 
     .logo {
-      @apply flex flex-row items-center gap-2;
+      @apply flex flex-row items-center gap-2 z-50;
 
       p {
         @apply text-xl font-bold italic max-sm:hidden;
