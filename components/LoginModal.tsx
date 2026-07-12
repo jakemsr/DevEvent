@@ -9,7 +9,8 @@ enum SignInMode {
   none = "",
   GitHub = "GitHub",
   email = "email",
-  signUp = "signUp"
+  signUp = "signUp",
+  passwordReset = "password reset",
 }
 
 interface LoginModalProps {
