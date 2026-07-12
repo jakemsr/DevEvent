@@ -90,10 +90,13 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
       if (error) {
         setError(error.message || null);
       } else {
-        if (mode === SignInMode.signUp) {
-          setMessage("Sign up successful! Please check your email to verify your account.");
-        } else {
-          onModalClose();
+        switch (mode) {
+          case SignInMode.signUp:
+            setMessage("Sign up successful! Please check your email to verify your account.");
+            break;
+          default:
+            onModalClose();
+            break;
         }
       }
       setAuthenticating(SignInMode.none);
