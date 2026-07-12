@@ -106,6 +106,10 @@
   box-shadow: 0px 4px 40px 0px #00000066;
 }
 
+@utility btn-primary {
+  @apply bg-primary hover:bg-primary/90 cursor-pointer items-center justify-center rounded-[6px] px-2 py-1 font-semibold text-black;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -132,7 +136,7 @@
   }
 
   button {
-    @apply bg-primary hover:bg-primary/90 cursor-pointer items-center justify-center rounded-[6px] px-2 py-1 font-semibold text-black;
+    @apply btn-primary;
   }
 }
 
