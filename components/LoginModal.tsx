@@ -9,7 +9,7 @@ enum SignInMode {
   none = "",
   GitHub = "GitHub",
   email = "email",
-  signUp = "signUp",
+  signUp = "sign up",
   passwordReset = "password reset",
 }
 
