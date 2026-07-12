@@ -37,3 +37,14 @@ export const checkBookingByEmail = async ({ eventId, email }: { eventId: string,
         return { success: false, exists: false };
     }
 }
+
+export const getBookingsByEmail = async ({ email }: { email: string }) => {
+    try {
+        await connectToDatabase();
+        const bookings = await Booking.find({ email });
+        return { success: true, exists: bookings.length > 0, bookings };
+    } catch (e) {
+        console.error('get bookings by email failed', e);
+        return { success: false, exists: false, bookings: [] };
+    }
+}
