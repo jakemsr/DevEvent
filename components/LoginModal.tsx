@@ -23,7 +23,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signUp, setSignUp] = useState(false);
+  const [signMode, setSignMode] = useState<SignInMode>(SignInMode.email);
   const [authenticating, setAuthenticating] = useState<SignInMode>(SignInMode.none);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState("");
@@ -92,11 +92,14 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
         switch (mode) {
           case SignInMode.passwordReset:
             setMessage("Password reset email sent! Please check your inbox.");
+            setSignMode(mode);
             break;
           case SignInMode.signUp:
             setMessage("Sign up successful! Please check your email to verify your account.");
+            setSignMode(mode);
             break;
           default:
+            setSignMode(SignInMode.email);
             onModalClose();
             break;
         }
@@ -129,7 +132,13 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
       <div className="border-2 rounded-lg w-96 flex flex-col items-center justify-center bg-black"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-3 w-full flex justify-end">
+        <div className="p-3 w-full flex justify-between">
+          <div className="text-black px-2">X</div>
+          <div>
+            <h2 className="text-lg font-bold text-center capitalize">
+              {signMode}
+            </h2>
+          </div>
           <Button onClick={onModalClose}>
             X
           </Button>
@@ -147,7 +156,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           <div className="text-black px-2">X</div>
           <div>
             <h2 className="text-lg font-bold text-center">
-              {signUp ? "Sign Up" : "Login"}
+              {signMode === SignInMode.signUp ? "Sign Up" : "Login"}
             </h2>
           </div>
           <Button onClick={onModalClose}>
@@ -157,7 +166,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
 
         {error && <div className="px-4 text-red-400">{error}</div>}
 
-        {!signUp && (
+        {signMode !== SignInMode.signUp && (
           <>
             <div className="mt-2">
               <SignIn mode={SignInMode.GitHub} />
@@ -170,7 +179,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           </>
         )}
         <div className="my-2 grid grid-cols-4 px-4 w-full gap-2 items-center">
-          {signUp && (
+          {signMode === SignInMode.signUp && (
             <>
               <div className="col-span-1">
                 First Name
@@ -224,15 +233,15 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           </div>
         </div>
         <SignIn
-          mode={signUp ? SignInMode.signUp : SignInMode.email}
+          mode={signMode}
           email={email}
           password={password}
           firstName={firstName}
           lastName={lastName}
         />
         <div className="mt-2">
-          <span onClick={() => {setError(""); setSignUp(!signUp)}} className="cursor-pointer">
-            {signUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+          <span onClick={() => {setError(""); setSignMode(signMode === SignInMode.signUp ? SignInMode.email : SignInMode.signUp)}} className="cursor-pointer">
+            {signMode === SignInMode.signUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
           </span>
         </div>
         <div className="my-2">
