@@ -151,17 +151,17 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
 
         {!signUp && (
           <>
-            <div className="mt-4">
+            <div className="mt-2">
               <SignIn mode={SignInMode.GitHub} />
             </div>
-            <div className="flex items-center mt-4 px-4 w-full">
+            <div className="flex items-center mt-2 px-4 w-full">
               <div className="grow border-t border-gray-300"></div>
               <span className="shrink mx-2">OR</span>
               <div className="grow border-t border-gray-300"></div>
             </div>
           </>
         )}
-        <div className="my-4 grid grid-cols-4 px-4 w-full gap-2 items-center">
+        <div className="my-2 grid grid-cols-4 px-4 w-full gap-2 items-center">
           {signUp && (
             <>
               <div className="col-span-1">
@@ -222,12 +222,12 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           firstName={firstName}
           lastName={lastName}
         />
-        <div className="mt-4">
+        <div className="mt-2">
           <span onClick={() => {setError(""); setSignUp(!signUp)}} className="cursor-pointer">
             {signUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
           </span>
         </div>
-        <div className="my-4">
+        <div className="my-2">
           Forgot Password?
           <SignIn mode={SignInMode.passwordReset} email={email} />
         </div>
