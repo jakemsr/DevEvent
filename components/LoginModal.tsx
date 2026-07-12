@@ -147,7 +147,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           </Button>
         </div>
 
-        {error && <div className="w-full px-4 text-center text-red-400">{error}</div>}
+        {error && <div className="px-4 text-red-400">{error}</div>}
 
         {!signUp && (
           <>
