@@ -1,9 +1,9 @@
+import Link from "next/link";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { getBookingsByEmail } from "@/lib/actions/booking.actions";
 import { Event } from "@/database";
 import { IEvent } from "@/database/event.model";
-import { Link } from "lucide-react";
 
 
 export default async function DashboardPage() {
@@ -25,6 +25,19 @@ export default async function DashboardPage() {
       }
       events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }
+  }
+
+  interface Actions {
+    page: string;
+    text: string;
+  }
+
+  let actions: Actions[] = [];
+  if (session?.user?.role === "creator" || session?.user?.role === "admin") {
+    actions.push({ page: "/create-event", text: "Create Event" });
+  }
+  if (session?.user?.role === "admin") {
+    actions.push({ page: "/admin", text: "Admin Panel" });
   }
 
 
@@ -57,7 +70,9 @@ export default async function DashboardPage() {
             {events.length > 0 ? (
               <ul>
                 {events.map((event, index) => (
-                  <li key={index}>{event.date} | {event.title}</li>
+                  <li key={index}>
+                    {event.date} | <Link href={`/events/${event.slug}`}>{event.title}</Link>
+                  </li>
                 ))}
               </ul>
             ) : (
@@ -65,13 +80,22 @@ export default async function DashboardPage() {
             )}
           </div>
 
-          {session.user.role === "creator" || session.user.role === "admin" && (
-            <div className="col-span-4">
-              <Link href="/create-event" className="bg-primary hover:bg-primary/90 cursor-pointer items-center justify-center rounded-[6px] px-2 py-1 font-semibold text-black">
-                Create Event
-              </Link>
-            </div>
-          )}
+          <div className="font-bold col-span-1">
+            Actions
+          </div>
+          <div className="col-span-3">
+            {actions.length > 0 ? (
+              <ul>
+                {actions.map((action, index) => (
+                  <li key={index}>
+                    <Link href={action.page}>{action.text}</Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No actions available</p>
+            )}
+          </div>
 
         </div>
 
