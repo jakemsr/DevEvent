@@ -47,6 +47,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
         case SignInMode.GitHub:
           ({data, error} = await authClient.signIn.social({
             provider: "github",
+            callbackURL: window.location.origin + "/dashboard",
           }));
           break;
         case SignInMode.email:
@@ -57,6 +58,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
           ({data, error} = await authClient.signIn.email({
             email: email || "",
             password: password || "",
+            callbackURL: window.location.origin + "/dashboard",
           }));
           break;
         case SignInMode.signUp:
@@ -70,6 +72,7 @@ const LoginModal = ({ onModalClose }: LoginModalProps) => {
             lastName: lastName || "",
             email: email || "",
             password: password || "",
+            callbackURL: window.location.origin + "/dashboard",
           }));
           break;
         case SignInMode.passwordReset:
