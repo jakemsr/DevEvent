@@ -15,14 +15,12 @@ learn about developer events.
 
 ### Features
 * Authentication using Better Auth
-..* Social logins with OAuth
-..* Email/password credentials
-..* Email verification
-..* Password reset via email
+    * Social logins with OAuth
+    * Email/password credentials
+    * Email verification
+    * Password reset via email
 * Data storage with MongoDB
-..* Event details
-..* Event bookings
-..* Better Auth session management
+    * Event details
+    * Event bookings
+    * Better Auth session management
 * Custom REST API for event creation
-
-
