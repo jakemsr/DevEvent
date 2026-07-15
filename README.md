@@ -6,7 +6,7 @@
 A site for finding the best developer events.
 
 ### Tech Stack
-React, NextJS, Better Auth, MongoDB, REST
+React, NextJS, TailwindCSS, Better Auth, MongoDB, REST API
 
 ### Why
 This project served as a way to learn more about backend development,
