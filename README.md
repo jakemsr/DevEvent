@@ -1,6 +1,6 @@
 # Dev Events
 
-(https://dev-event-omega-five.vercel.app/ "Live Site")
+**[Live site](https://dev-event-omega-five.vercel.app/)**
 
 ### Description
 A site for finding the best developer events.
